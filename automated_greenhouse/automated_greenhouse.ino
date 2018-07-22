@@ -37,13 +37,21 @@ const int tempThreshold = 30;
 const double soilMoistureThreshold = 30.0;
 const int waterDuration = 1000 * 10;
 
+int debounceDuration = 50;
+
 //----STATE----
 int startMillis = 0;
+
 bool isWindowOpen = false;
-bool isWaterOpen = false;
 bool isDisplayingTemperature = true;
 bool windowOvrdPressed = false;
 bool waterOvrdPressed = false;
+
+//----BOOK KEEPING----
+int prevOvrdWindowDebounceTime = 0;
+int prevOvrdWaterDebounceTime = 0;
+int prevOvrdWindowState = LOW;
+int prevOvrdWaterState = LOW;
 
 void setup() {
   //init serial for debugging
@@ -65,7 +73,7 @@ void setup() {
   pinMode(SOLENOID, OUTPUT);
 
   //init water
-  CloseWater();
+  StopWater();
 
   //init motor
   //30 rpm, full step (no microstepping)
@@ -102,46 +110,41 @@ void loop() {
   }
 
   //check override buttons
-  //only trigger when button is first pressed down
-  if (digitalRead(OVRD_WINDOW) == HIGH && !windowOvrdPressed) {
-    //debounce
-    //delay(1);
-    //if (digitalRead(OVRD_WINDOW) == HIGH) {
-    windowOvrdPressed = true;
+  int windowState = digitalRead(OVRD_WINDOW);
+  int waterState = digitalRead(OVRD_WATER);
 
-    if (isWindowOpen) {
-      CloseWindow();
-    }
-    else {
-      OpenWindow();
-    }
-    //}
+  //check when the button state has changed
+  if (windowState != prevOvrdWindowState) {
+    //set last debounce to now
+    prevOvrdWindowDebounceTime = millis();
   }
 
-  //button release
-  if (digitalRead(OVRD_WINDOW) == LOW) {
-    windowOvrdPressed = false;
+  if (waterState != prevOvrdWaterState) {
+    prevOvrdWaterDebounceTime = millis();
   }
 
-  //only trigger when button is first pressed down
-  if (digitalRead(OVRD_WATER) == HIGH && !waterOvrdPressed) {
-    //debounce
-    //delay(1);
-    //if (digitalRead(OVRD_WATER) == HIGH) {
-    waterOvrdPressed = true;
+  //wait until enough time has passed to consider the next input
+  if ((millis() - prevOvrdWindowDebounceTime) > debounceDuration) {
+    if (windowState == HIGH) {
+      //store new state
+      prevOvrdWindowState = windowState;
 
-    if (isWaterOpen) {
-      CloseWater();
+      //toggle windows
+      if (isWindowOpen) {
+        CloseWindow();
+      }
+      else {
+        OpenWindow();
+      }
     }
-    else {
-      OpenWater();
-    }
-    //}
   }
 
-  //button release
-  if (digitalRead(OVRD_WATER) == LOW) {
-    waterOvrdPressed = false;
+  if ((millis() - prevOvrdWaterDebounceTime) > debounceDuration) {
+    if (waterState == HIGH) {
+      prevOvrdWaterState = waterState;
+
+      StartWater();
+    }
   }
 
   //slow down sketch
@@ -203,9 +206,9 @@ void ReadSoilMoisture() {
   lcd.print("%");
 
   //if moisture is over or under threshold - make appropriate action
-  if (moisturePercentage < soilMoistureThreshold && !isWaterOpen) {
+  if (moisturePercentage < soilMoistureThreshold) {
     //open water
-    OpenWater();
+    StartWater();
   }
 }
 
@@ -267,9 +270,8 @@ void CloseWindow() {
   startMillis = 0;
 }
 
-void OpenWater() {
-  Serial.println("open water");
-  isWaterOpen = true;
+void StartWater() {
+  Serial.println("water on");
 
   digitalWrite(SOLENOID, HIGH);
 
@@ -281,12 +283,11 @@ void OpenWater() {
   delay(waterDuration);
 
   //close water when finished
-  CloseWater();
+  StopWater();
 }
 
-void CloseWater() {
-  Serial.println("close water");
-  isWaterOpen = false;
+void StopWater() {
+  Serial.println("water off");
 
   digitalWrite(SOLENOID, LOW);
 
