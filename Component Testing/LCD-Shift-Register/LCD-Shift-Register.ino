@@ -1,5 +1,5 @@
 //----LIBRARIES----
-#include <SPI.h>
+//#include <SPI.h>
 #include <LiquidCrystal.h>
 
 //----CONFIG----
