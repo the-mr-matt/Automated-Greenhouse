@@ -4,6 +4,8 @@
 #include <LiquidCrystal.h>
 #include <Arduino.h>
 #include "A4988.h"
+#include <Wire.h>
+#include "RTClib.h"
 
 //----PINS----
 #define OVRD_WINDOW 12
@@ -29,6 +31,7 @@
 dht tempSnsr;
 LiquidCrystal lcd(9);
 A4988 stepper(MOTOR_STEPS, DIR, STEP);
+RTC_DS1307 rtc;
 
 //milliseconds * seconds
 const int delayInterval = 1000 * 10;
@@ -46,12 +49,15 @@ bool isWindowOpen = false;
 bool isDisplayingTemperature = true;
 bool windowOvrdPressed = false;
 bool waterOvrdPressed = false;
+bool waterScheduled;
 
 //----BOOK KEEPING----
-int prevOvrdWindowDebounceTime = 0;
-int prevOvrdWaterDebounceTime = 0;
-int prevOvrdWindowState = LOW;
-int prevOvrdWaterState = LOW;
+int b_OvrdWindowDebounceTime = 0;
+int b_OvrdWaterDebounceTime = 0;
+int b_OvrdWindowState = LOW;
+int b_OvrdWaterState = LOW;
+
+bool b_IsDay;
 
 void setup() {
   //init serial for debugging
@@ -72,6 +78,15 @@ void setup() {
   pinMode(WINDOW_DOWN, INPUT);
   pinMode(SOLENOID, OUTPUT);
 
+  //init clock
+  Wire.begin();
+  rtc.begin();
+
+  //set clock time - only done once
+  //once the time has been set, this is commented out and reuploaded
+  rtc.adjust(DateTime(2018, 7, 23, 7, 59, 30));
+  //rtc.adjust(DateTime(__DATE__, __TIME__));
+
   //init water
   StopWater();
 
@@ -90,10 +105,28 @@ void setup() {
 }
 
 void loop() {
-  //wait for 5 seconds
+  //check if the day time status has changed
+  Serial.print("Is Day: ");
+  Serial.print(IsDay());
+  Serial.print(" Hour: ");
+  Serial.print(rtc.now().hour());
+  Serial.print(" Minute: ");
+  Serial.print(rtc.now().minute());
+  Serial.print(" Second: ");
+  Serial.println(rtc.now().second());
+  if(IsDay() != b_IsDay) {
+    //check if it is now day time and water was schedualed from last night
+    if(IsDay() && waterScheduled) {
+      Serial.println("Starting Schedual");
+      delay(100);
+      StartWater();
+      waterScheduled = false;
+    }
+  }
+  
+  //wait for 5 seconds before switching to the next input to display on the lcd
   int currentMillis = millis();
   if (currentMillis - startMillis >= delayInterval) {
-    Serial.println("tick");
     //read input
     if (isDisplayingTemperature) {
       ReadTemperature();
@@ -114,20 +147,20 @@ void loop() {
   int waterState = digitalRead(OVRD_WATER);
 
   //check when the button state has changed
-  if (windowState != prevOvrdWindowState) {
+  if (windowState != b_OvrdWindowState) {
     //set last debounce to now
-    prevOvrdWindowDebounceTime = millis();
+    b_OvrdWindowDebounceTime = millis();
   }
 
-  if (waterState != prevOvrdWaterState) {
-    prevOvrdWaterDebounceTime = millis();
+  if (waterState != b_OvrdWaterState) {
+    b_OvrdWaterDebounceTime = millis();
   }
 
   //wait until enough time has passed to consider the next input
-  if ((millis() - prevOvrdWindowDebounceTime) > debounceDuration) {
+  if ((millis() - b_OvrdWindowDebounceTime) > debounceDuration) {
     if (windowState == HIGH) {
       //store new state
-      prevOvrdWindowState = windowState;
+      b_OvrdWindowState = windowState;
 
       //toggle windows
       if (isWindowOpen) {
@@ -139,13 +172,16 @@ void loop() {
     }
   }
 
-  if ((millis() - prevOvrdWaterDebounceTime) > debounceDuration) {
+  if ((millis() - b_OvrdWaterDebounceTime) > debounceDuration) {
     if (waterState == HIGH) {
-      prevOvrdWaterState = waterState;
+      b_OvrdWaterState = waterState;
 
       StartWater();
     }
   }
+
+  //get the current day time status
+  b_IsDay = IsDay();
 
   //slow down sketch
   delay(50);
@@ -206,9 +242,19 @@ void ReadSoilMoisture() {
   lcd.print("%");
 
   //if moisture is over or under threshold - make appropriate action
-  if (moisturePercentage < soilMoistureThreshold) {
-    //open water
-    StartWater();
+  //dont bother if water is already schedualed for next morning
+  if (!waterScheduled && moisturePercentage < soilMoistureThreshold) {
+    //check to make sure its ok to turn on the water now
+    if (IsDay()) {
+      //open water
+      StartWater();
+    }
+    else {
+      //schedual watering for the next morning
+      waterScheduled = true;
+      Serial.println("Schedualed Water");
+      delay(100);
+    }
   }
 }
 
@@ -301,3 +347,12 @@ void StopWater() {
   //reset millis so the temp and humidity will immediately be displayed
   startMillis = 0;
 }
+
+bool IsDay() {
+  //get current time
+  DateTime now = rtc.now();
+
+  //day time is considered to be between 8AM and 6PM for this project
+  return (now.hour() >= 8 && now.hour() < 18);
+}
+

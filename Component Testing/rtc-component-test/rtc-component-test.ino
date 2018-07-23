@@ -39,6 +39,7 @@ void loop() {
 bool IsDay() {
   DateTime now = rtc.now();
 
+  //day time is considered to be between 8AM and 6PM for this project
   return (now.hour() > 8 && now.hour() < 18);
 }
 
