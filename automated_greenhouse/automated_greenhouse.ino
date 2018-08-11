@@ -8,16 +8,16 @@
 #include "RTClib.h"
 
 //----PINS----
-#define OVRD_WINDOW 12
+#define OVRD_WINDOW 4
 #define OVRD_WATER 5
 
 #define MOTOR_STEPS 200
-#define STEP 8
-#define DIR 7
+#define STEP 7
+#define DIR 8
 
 #define SOLENOID 6
 
-#define TEMP_SNSR 4
+#define TEMP_SNSR 12
 
 #define WINDOW_UP 3
 #define WINDOW_DOWN 2
@@ -84,7 +84,7 @@ void setup() {
 
   //set clock time - only done once
   //once the time has been set, this is commented out and reuploaded
-  rtc.adjust(DateTime(2018, 7, 23, 7, 59, 30));
+  //rtc.adjust(DateTime(2018, 7, 23, 7, 59, 30));
   //rtc.adjust(DateTime(__DATE__, __TIME__));
 
   //init water
@@ -352,7 +352,7 @@ bool IsDay() {
   //get current time
   DateTime now = rtc.now();
 
-  //day time is considered to be between 8AM and 6PM for this project
-  return (now.hour() >= 8 && now.hour() < 18);
+  //day time is considered to be between 8AM and 5PM for this project
+  return (now.hour() >= 8 && now.hour() < 17);
 }
 

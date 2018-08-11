@@ -4,8 +4,8 @@
 
 //----CONFIG----
 #define MOTOR_STEPS 200
-#define DIR 7
-#define STEP 8
+#define DIR 8
+#define STEP 7
 
 #define SEN1 2
 
@@ -26,14 +26,14 @@ void setup()
 
   //init position
   digitalWrite(13, HIGH);
-  int sen1 = 0;
-  while(sen1 == LOW)
-  {
-    sen1 = digitalRead(SEN1);
-    
-    stepper.rotate(1.8);
-    delay(25);
-  }
+//  int sen1 = 0;
+//  while(sen1 == LOW)
+//  {
+//    sen1 = digitalRead(SEN1);
+//    
+//    stepper.rotate(1.8);
+//    delay(25);
+//  }
   digitalWrite(13, LOW);
 }
 
