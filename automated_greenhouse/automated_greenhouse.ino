@@ -123,7 +123,7 @@ void loop() {
       waterScheduled = false;
     }
   }
-  
+
   //wait for 5 seconds before switching to the next input to display on the lcd
   int currentMillis = millis();
   if (currentMillis - startMillis >= delayInterval) {
@@ -355,4 +355,3 @@ bool IsDay() {
   //day time is considered to be between 8AM and 5PM for this project
   return (now.hour() >= 8 && now.hour() < 17);
 }
-

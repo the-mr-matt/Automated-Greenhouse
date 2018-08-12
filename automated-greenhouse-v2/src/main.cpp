@@ -1,15 +1,22 @@
 #include <Arduino.h>
+#include "lcd.h"
+#include "window.h"
 
-void setup() {
-	pinMode(13, OUTPUT);
+void setup()
+{
+	Serial.begin(9600);
+
+	InitializeLCD();
+
+	lcd.clear();
+	lcd.print("opening window");
+
+	OpenWindow();
+
+	lcd.clear();
+	lcd.print("finished");
 }
 
-void loop() {
-	digitalWrite(13, HIGH);
-
-	delay(1000);
-
-	digitalWrite(13, LOW);
-
-	delay(1000);
+void loop()
+{
 }
