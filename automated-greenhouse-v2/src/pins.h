@@ -4,6 +4,8 @@
 //----CONFIG----
 const int windowOpenPin = 2;
 const int windowClosedPin = 3;
+const int windowOverridePin = 4;
+const int waterOverridePin = 5;
 const int soilPin1 = 0;	//analog
 const int soilPin2 = 1; //analog
 const int soilPin3 = 2; //analog
