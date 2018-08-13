@@ -6,44 +6,49 @@
 #include <Arduino.h>
 
 //----IMPLEMENTATIONS----
-extern bool isWindowOpen = false;
+// extern bool isWindowOpen = false;
 
-void OpenWindow()
+Window::Window(){}
+
+void Window::SetWindow(bool open)
 {
 	//init timer
 	int startTime = millis();
 
-	//clear LCD
 	lcd.clear();
 
 	//loop until window is fully open
-	while(!windowOpenPin)
+	while(true)
 	{
 		//turn motor slightly
-		// Step(1.8, Direction::Anticlockwise);
+		motor.Step(1.8, open ? Direction::Anticlockwise : Direction::Clockwise);
 
-		//display time to user
+		//give message to user
 		lcd.setCursor(0, 0);
-		lcd.print(millis() - startTime);
+		String message = open ? "Opening Window" : "Closing Window";
+		lcd.print(message);
+
+		//show elapsed time
+		lcd.setCursor(0, 1);
+		lcd.print((millis() - startTime) / 1000);
 
 		//check if the window is now open
 		int windowState = digitalRead(windowOpenPin);
-		Serial.println(windowState);
 		if(windowState == HIGH)
 		{
 			//window is open
 			lcd.clear();
-			lcd.print("Window Open");
+			String message = open ? "Window Open" : "Window Closed";
+			lcd.print(message);
 
-			isWindowOpen = true;
+			//wait for user to read message
+			delay(2000);
+
+			//break loop
+			return;
 		}
 
 		//wait a bit
 		delay(25);
 	}
-}
-
-void CloseWindow()
-{
-
 }

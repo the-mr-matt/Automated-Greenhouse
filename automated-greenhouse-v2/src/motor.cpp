@@ -7,13 +7,15 @@
 A4988 stepper(motorSteps, motorDirPin, motorStepPin);
 
 //----IMPLEMENTATIONS----
-void InitializeMotor()
+Motor::Motor(){}
+
+void Motor::Initialize()
 {
 	//30 RPM, no microstepping
 	stepper.begin(30, 1);
 }
 
-void Step (float degrees, Direction direction)
+void Motor::Step (float degrees, Direction direction)
 {
 	degrees *= direction == 0;
 	stepper.rotate(degrees);

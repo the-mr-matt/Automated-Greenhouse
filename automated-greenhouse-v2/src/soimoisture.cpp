@@ -1,10 +1,23 @@
 //----LIBRARIES----
 #include "soilmoisture.h"
 #include "pins.h"
+#include "lcd.h"
 #include <Arduino.h>
 
 //----IMPLEMENTATIONS
-float GetSoilMoisture()
+SoilMoisture::SoilMoisture(){}
+
+void SoilMoisture::PrintSoilMoisture()
+{
+	lcd.clear();
+
+	lcd.setCursor(0, 0);
+	lcd.print("SoilMoisture: ");
+	lcd.print(GetSoilMoisture());
+	lcd.print("%");
+}
+
+int SoilMoisture::GetSoilMoisture()
 {
 	//read all sensors
 	int soil1 = analogRead(soilPin1);
@@ -16,5 +29,8 @@ float GetSoilMoisture()
 	float avg = (float)soil1 + (float)soil2 + (float)soil3 + (float)soil4;
 	avg /= 4.0;
 
-	return avg;
+	float normalized = avg / 1024.0;
+	int percentage = (int)(avg * 100.0);
+
+	return percentage;
 }

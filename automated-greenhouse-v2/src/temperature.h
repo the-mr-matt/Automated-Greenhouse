@@ -1,8 +1,22 @@
 #ifndef temperature_h
 #define temperature_h
 
-//----DECLARATIONS----
 const int temperatureThreshold = 30;
-int GetTemperature();
+
+class Temperature
+{
+public:
+    //constructor
+    Temperature();
+
+    //declarations
+    void ProcessTemperature();
+    void PrintTemperature();
+    int GetTemperature();
+    float GetHumidity();
+};
+
+//global
+extern Temperature temperature;
 
 #endif //temperature_h

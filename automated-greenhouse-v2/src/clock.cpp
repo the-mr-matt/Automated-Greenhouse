@@ -7,13 +7,15 @@
 RTC_DS1307 rtc;
 
 //----IMPLEMENTATIONS----
-void InitializeClock()
+Clock::Clock(){}
+
+void Clock::Initialize()
 {
   Wire.begin();
   rtc.begin();
 }
 
-bool IsDay() {
+bool Clock::IsDay() {
   //get current time
   DateTime now = rtc.now();
 

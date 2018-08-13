@@ -1,8 +1,20 @@
 #ifndef soilmoisture_h
 #define soilmoisture_h
 
-//----DECLARATIONS----
 const int soilThreshold = 30;	//%
-float GetSoilMoisture();
+
+class SoilMoisture
+{
+public:
+    //constructor
+    SoilMoisture();
+
+    //declarations
+    void PrintSoilMoisture();
+    int GetSoilMoisture();
+};
+
+//global
+extern SoilMoisture soilMoisture;
 
 #endif //soilmoisture_h

@@ -1,12 +1,21 @@
 #ifndef motor_h
 #define motor_h
 
-//----DECLARATIONS----
 const int motorSteps = 200;
-
 enum Direction { Clockwise, Anticlockwise };
 
-void InitializeMotor();
-void Step(float degrees, Direction direction);
+class Motor
+{
+public:
+    //constructor
+    Motor();
+
+    //declarations
+    void Initialize();
+    void Step(float degrees, Direction direction);
+};
+
+//global
+extern Motor motor;
 
 #endif //motor_h

@@ -4,12 +4,14 @@
 #include <Arduino.h>
 
 //----IMPLEMENTATIONS----
-void TurnOnWater()
+Water::Water(){}
+
+void Water::TurnOn()
 {
 	digitalWrite(solenoidPin, HIGH);
 }
 
-void TurnOffWater()
+void Water::TurnOff()
 {
 	digitalWrite(solenoidPin, LOW);
 }

@@ -1,8 +1,17 @@
 #ifndef clock_h
 #define clock_h
 
-//----DECLARATIONS----
-void InitializeClock();
-bool IsDay();
+class Clock
+{
+public:
+  //constructor
+  Clock();
+
+  //declarations
+  void Initialize();
+  bool IsDay();
+};
+
+extern Clock clock;
 
 #endif //clock_h
