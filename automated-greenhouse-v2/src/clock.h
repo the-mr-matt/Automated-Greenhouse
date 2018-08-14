@@ -11,7 +11,7 @@ public:
   void Initialize();
   void OnStartDay(void(*callback)());
   bool IsDay();
-  bool schedule;
+  static bool schedule;
 };
 
 extern Clock clock;

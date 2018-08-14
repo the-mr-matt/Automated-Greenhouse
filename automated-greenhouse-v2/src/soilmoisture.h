@@ -1,7 +1,7 @@
 #ifndef soilmoisture_h
 #define soilmoisture_h
 
-const int soilThreshold = 30;	//%
+const int soilMoistureThreshold = 30;	//%
 
 class SoilMoisture
 {
@@ -10,7 +10,10 @@ public:
     SoilMoisture();
 
     //declarations
+    void ProcessSoilMoisture();
     void PrintSoilMoisture();
+
+private:
     int GetSoilMoisture();
 };
 

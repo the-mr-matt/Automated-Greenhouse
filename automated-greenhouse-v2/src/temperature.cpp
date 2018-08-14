@@ -1,13 +1,43 @@
+// #include "DHT.h"
+// #include <Arduino.h>
+// #include "temperature.h"
+//
+// DHT temp;
+//
+// Temperature::Temperature(){}
+//
+// void Temperature::Initialize()
+// {
+// 	temp.setup(12);
+// }
+//
+// int Temperature::GetTemperature()
+// {
+// Serial.print(temp.getStatusString());
+// Serial.print(", ");
+// Serial.print(temp.getTemperature());
+// Serial.print(", ");
+// Serial.println(temp.getHumidity());
+//
+// 	return 0;
+// }
+
+
+
+
+
 //----LIBRARIES----
+#include <Arduino.h>
 #include "temperature.h"
-#include "dht.h"
+#include "DHT.h"
 #include "pins.h"
 #include "lcd.h"
 #include "window.h"
 
 //----CONFIG----
-dht tempSensor;
+DHT tempSensor;
 bool isTemperatureOverThreshold;
+TempAndHumidity values;
 
 //----BOOK KEEPING----
 bool b_IsTemperatureOverThreshold;
@@ -15,14 +45,26 @@ bool b_IsTemperatureOverThreshold;
 //----IMPLEMENTATIONS
 Temperature::Temperature(){}
 
+void Temperature::Initialize()
+{
+	tempSensor.setup(12);
+}
+
 void Temperature::ProcessTemperature()
 {
+	Serial.println("process temperature");
+
+	//get current values
+	values = GetValues();
+
 	//check if the temperature is currently over the threshold
-	isTemperatureOverThreshold = temperature.GetTemperature() > temperatureThreshold;
+	isTemperatureOverThreshold = values.temperature > temperatureThreshold;
 
 	//temperature has changed
 	if(b_IsTemperatureOverThreshold != isTemperatureOverThreshold)
 	{
+		Serial.println("temp over threshold changed");
+
 		//set window
 		if(isTemperatureOverThreshold)
 		{
@@ -41,45 +83,49 @@ void Temperature::ProcessTemperature()
 //Prints the temperature and humidity to the LCD
 void Temperature::PrintTemperature()
 {
+	//debug
+	Serial.print("temperature: ");
+	Serial.print(values.temperature);
+	Serial.println("*C");
+
+	Serial.print("humidity: ");
+	Serial.print(values.humidity);
+	Serial.println("%");
+
 	lcd.clear();
 
 	//temperature
 	lcd.setCursor(0, 0);
 	lcd.print("Temp: ");
-	lcd.print(GetTemperature());
-	lcd.print("°C");
+	lcd.print(values.temperature);
+	lcd.print("*C");
 
 	//humidity
 	lcd.setCursor(0, 1);
 	lcd.print("Humidity: ");
-	lcd.print((int)GetHumidity());
+	lcd.print(values.humidity);
 	lcd.print("%");
 }
 
-//Returns the current temperature of the greenhouse
-int Temperature::GetTemperature()
+TempAndHumidity Temperature::GetValues()
 {
-	int result = tempSensor.read11(tempSensorPin);
+	TempAndHumidity tempAndHumidity;
 
-	//check the reading is correct
-	if(result == DHTLIB_OK)
+	//get current values
+	int temperature = (int)tempSensor.getTemperature();
+	int humidity = (int)tempSensor.getHumidity();
+
+	//check for valid numbers
+	if(isnan(temperature) || isnan(humidity))
 	{
-		return tempSensor.temperature;
+		tempAndHumidity.temperature = defaultTemperature;
+		tempAndHumidity.humidity = defaultHumidity;
+		return tempAndHumidity;
 	}
 
-	return 0;
-}
+	//values are as expected
+	tempAndHumidity.temperature = temperature;
+	tempAndHumidity.humidity = humidity;
 
-//Returns the current humidity of the greenhouse
-float Temperature::GetHumidity()
-{
-	int result = tempSensor.read11(tempSensorPin);
-
-	//check the reading is correct
-	if(result == DHTLIB_OK)
-	{
-		return tempSensor.humidity;
-	}
-
-	return 0;
+	return tempAndHumidity;
 }

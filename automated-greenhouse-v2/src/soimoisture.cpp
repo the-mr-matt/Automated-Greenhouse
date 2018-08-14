@@ -2,10 +2,19 @@
 #include "soilmoisture.h"
 #include "pins.h"
 #include "lcd.h"
+#include "water.h"
 #include <Arduino.h>
 
 //----IMPLEMENTATIONS
 SoilMoisture::SoilMoisture(){}
+
+void SoilMoisture::ProcessSoilMoisture()
+{
+	Serial.println("process soil moisture");
+
+	bool waterState = GetSoilMoisture() > soilMoistureThreshold;
+	water.SetWater(waterState);
+}
 
 //Prints the soil moisture to the LCD
 void SoilMoisture::PrintSoilMoisture()
@@ -13,7 +22,7 @@ void SoilMoisture::PrintSoilMoisture()
 	lcd.clear();
 
 	lcd.setCursor(0, 0);
-	lcd.print("SoilMoisture: ");
+	lcd.print("Moisture: ");
 	lcd.print(GetSoilMoisture());
 	lcd.print("%");
 }
@@ -32,7 +41,8 @@ int SoilMoisture::GetSoilMoisture()
 	avg /= 4.0;
 
 	float normalized = avg / 1024.0;
-	int percentage = (int)(normalized * 100.0);
+	float flipped = 1.0 - normalized;
+	int percentage = (int)(flipped * 100.0);
 
 	return percentage;
 }

@@ -11,6 +11,9 @@ Window::Window(){}
 //Opens/closes the window
 void Window::SetWindow(bool open)
 {
+	Serial.print("set window to: ");
+	Serial.println(open);
+
 	//init timer
 	int startTime = millis();
 
@@ -28,13 +31,20 @@ void Window::SetWindow(bool open)
 		lcd.print(message);
 
 		//show elapsed time
+		int elapsedTime = (millis() - startTime) / 1000;
 		lcd.setCursor(0, 1);
-		lcd.print((millis() - startTime) / 1000);
+		lcd.print(elapsedTime);
+		lcd.print("s");
+		Serial.print(elapsedTime);
+		Serial.println("s");
 
 		//check if the window is now open
-		int windowState = digitalRead(windowOpenPin);
+		int windowState = digitalRead(open ? windowOpenPin : windowClosedPin);
 		if(windowState == HIGH)
 		{
+			Serial.print("window ");
+			Serial.println(open ? "open" : "closed");
+
 			//window is open
 			lcd.clear();
 			String message = open ? "Window Open" : "Window Closed";
