@@ -6,10 +6,9 @@
 #include <Arduino.h>
 
 //----IMPLEMENTATIONS----
-// extern bool isWindowOpen = false;
-
 Window::Window(){}
 
+//Opens/closes the window
 void Window::SetWindow(bool open)
 {
 	//init timer

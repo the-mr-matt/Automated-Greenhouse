@@ -8,8 +8,7 @@ public:
   Water();
 
   //declarations
-  void TurnOn();
-  void TurnOff();
+  void SetWater(bool state);
 };
 
 //global

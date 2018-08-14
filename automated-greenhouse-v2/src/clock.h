@@ -9,7 +9,9 @@ public:
 
   //declarations
   void Initialize();
+  void OnStartDay(void(*callback)());
   bool IsDay();
+  bool schedule;
 };
 
 extern Clock clock;

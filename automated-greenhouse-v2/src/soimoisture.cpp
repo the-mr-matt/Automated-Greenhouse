@@ -7,6 +7,7 @@
 //----IMPLEMENTATIONS
 SoilMoisture::SoilMoisture(){}
 
+//Prints the soil moisture to the LCD
 void SoilMoisture::PrintSoilMoisture()
 {
 	lcd.clear();
@@ -17,6 +18,7 @@ void SoilMoisture::PrintSoilMoisture()
 	lcd.print("%");
 }
 
+//Returns the average soil moisture
 int SoilMoisture::GetSoilMoisture()
 {
 	//read all sensors
@@ -30,7 +32,7 @@ int SoilMoisture::GetSoilMoisture()
 	avg /= 4.0;
 
 	float normalized = avg / 1024.0;
-	int percentage = (int)(avg * 100.0);
+	int percentage = (int)(normalized * 100.0);
 
 	return percentage;
 }
