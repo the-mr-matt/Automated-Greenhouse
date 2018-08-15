@@ -35,13 +35,10 @@ void setup()
 void loop()
 {
 	//manual override buttons
-	// auto windowCallback = [](){ Serial.println("window pressed"); };
-	// auto waterCallback = [](){ Serial.println("water pressed"); };
-	// Debounce(windowOverridePin, windowDebounceTime, prevWindowState, windowCallback);
-	// Debounce(waterOverridePin, waterDebounceTime, prevWaterState, waterCallback);
-
-	Serial.print("button: ");
-	Serial.println(digitalRead(windowOverridePin));
+	auto windowCallback = [](){ window.SetWindow(!window.isOpen); };
+	auto waterCallback = [](){ water.StartWatering(); };
+	Debounce(windowOverridePin, windowDebounceTime, prevWindowState, windowCallback);
+	Debounce(waterOverridePin, waterDebounceTime, prevWaterState, waterCallback);
 
 	//wait for refresh interval - process values and switch modes
 	long timeSinceLastDisplayModeChange = currentMillis - startMillis;

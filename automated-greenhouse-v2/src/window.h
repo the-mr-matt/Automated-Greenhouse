@@ -9,6 +9,7 @@ public:
 
     //declarations
     void SetWindow(bool open);
+    static bool isOpen;
 };
 
 //global

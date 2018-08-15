@@ -8,6 +8,8 @@
 //----IMPLEMENTATIONS----
 Window::Window(){}
 
+bool Window::isOpen = false;
+
 //Opens/closes the window
 void Window::SetWindow(bool open)
 {
@@ -54,6 +56,8 @@ void Window::SetWindow(bool open)
 			lcd.clear();
 			String message = open ? "Window Open" : "Window Closed";
 			lcd.print(message);
+
+			isOpen = open;
 
 			//wait for user to read message
 			delay(2000);
