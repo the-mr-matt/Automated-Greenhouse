@@ -1,25 +1,23 @@
-//----LIBRARIES----
-#include <dht.h>
+#include <DHT.h>
 
-//----CONFIG----
-#define DHTPIN 2
-
-//----STATE----
-dht DHT;
+DHT dht;
 
 void setup() {
+  dht.setup(12);
   Serial.begin(9600);
 }
 
 void loop() {
-  int chk = DHT.read11(DHTPIN);
-  if(chk == DHTLIB_OK)
-  {
-    Serial.print("Temperature: ");
-    Serial.print(DHT.temperature, 1);
-    Serial.print(" Humidity: " );
-    Serial.println(DHT.temperature, 1);
-  }
-  
+  float humidity = dht.getHumidity();
+  float temperature = dht.getTemperature();
+
+  Serial.print(dht.getStatusString());
+  Serial.print("\t");
+  Serial.print(humidity, 1);
+  Serial.print("\t\t");
+  Serial.print(temperature, 1);
+  Serial.print("\t\t");
+  Serial.println(dht.toFahrenheit(temperature), 1);
+
   delay(2000);
 }

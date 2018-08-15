@@ -1,18 +1,97 @@
+#include <DHT.h>
+#include <SPI.h>
+#include <LiquidCrystalSerial.h>
+
+DHT dht;
+// LiquidCrystalSerial LCD(9);
+
+void setup() {
+  dht.setup(12);
+  Serial.begin(9600);
+
+  // LCD.begin(16, 2);
+  // LCD.print("hello");
+}
+
+void loop() {
+  // LCD.setCursor(0, 1);
+  // LCD.print(millis() / 1000);
+
+  SPI.end();
+
+  float humidity = dht.getHumidity();
+  float temperature = dht.getTemperature();
+
+  Serial.print(dht.getStatusString());
+  Serial.print("\t");
+  Serial.print(humidity, 1);
+  Serial.print("\t\t");
+  Serial.print(temperature, 1);
+  Serial.print("\t\t");
+  Serial.println(dht.toFahrenheit(temperature), 1);
+
+  SPI.begin();
+
+  delay(2000);
+}
 
 
 // #include <SPI.h>
 // #include <LiquidCrystalSerial.h>
+// #include <DHT.h>
 //
 // LiquidCrystalSerial LCD(9);
-// 
+// DHT dht;
+//
+// void setup()
+// {
+//     Serial.begin(9600);
+//
+//     dht.setup(12);
+//     LCD.begin(16, 2);
+//     LCD.print("hello, world!");
+//     SPI.end();
+// }
+//
+// void loop()
+// {
+//     Serial.print("temp: ");
+//     Serial.println(dht.getTemperature());
+//
+//     // SPI.begin();
+//     // Serial.println("spi on");
+//
+//     // LCD.setCursor(0, 1);
+//     // LCD.print(millis()/1000);
+//
+//     // SPI.end();
+//     // Serial.println("spi off");
+//
+//     delay(2000);
+// }
+
+// #include <DHT.h>
+//
+// DHT dht;
+//
 // void setup() {
-//   LCD.begin(16, 2);
-//   LCD.print("hello, world!");
+//   dht.setup(12);
+//   Serial.begin(9600);
 // }
 //
 // void loop() {
-//   LCD.setCursor(0, 1);
-//   LCD.print(millis()/1000);
+//   float humidity = dht.getHumidity();
+//   float temperature = dht.getTemperature();
+//
+//   Serial.print(dht.getStatusString());
+//   Serial.print("\t");
+//   Serial.print(humidity, 1);
+//   Serial.print("\t\t");
+//   Serial.print(temperature, 1);
+//   Serial.print("\t\t");
+//   Serial.println(dht.toFahrenheit(temperature), 1);
+//
+//   delay(2000);
 // }
 
 // //----LIBRARIES----

@@ -2,7 +2,7 @@
 #include "window.h"
 #include "pins.h"
 #include "motor.h"
-#include "lcd.h"
+// #include "lcd.h"
 #include <Arduino.h>
 
 //----IMPLEMENTATIONS----
@@ -17,7 +17,7 @@ void Window::SetWindow(bool open)
 	//init timer
 	int startTime = millis();
 
-	lcd.clear();
+	// lcd.clear();
 
 	//loop until window is fully open
 	while(true)
@@ -26,15 +26,15 @@ void Window::SetWindow(bool open)
 		motor.Step(1.8, open ? Direction::Anticlockwise : Direction::Clockwise);
 
 		//give message to user
-		lcd.setCursor(0, 0);
-		String message = open ? "Opening Window" : "Closing Window";
-		lcd.print(message);
+		// lcd.setCursor(0, 0);
+		// String message = open ? "Opening Window" : "Closing Window";
+		// lcd.print(message);
 
 		//show elapsed time
 		int elapsedTime = (millis() - startTime) / 1000;
-		lcd.setCursor(0, 1);
-		lcd.print(elapsedTime);
-		lcd.print("s");
+		// lcd.setCursor(0, 1);
+		// lcd.print(elapsedTime);
+		// lcd.print("s");
 		Serial.print(elapsedTime);
 		Serial.println("s");
 
@@ -46,9 +46,9 @@ void Window::SetWindow(bool open)
 			Serial.println(open ? "open" : "closed");
 
 			//window is open
-			lcd.clear();
-			String message = open ? "Window Open" : "Window Closed";
-			lcd.print(message);
+			// lcd.clear();
+			// String message = open ? "Window Open" : "Window Closed";
+			// lcd.print(message);
 
 			//wait for user to read message
 			delay(2000);

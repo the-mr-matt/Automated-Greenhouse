@@ -31,7 +31,7 @@
 #include "temperature.h"
 #include "DHT.h"
 #include "pins.h"
-#include "lcd.h"
+// #include "lcd.h"
 #include "window.h"
 
 //----CONFIG----
@@ -92,19 +92,19 @@ void Temperature::PrintTemperature()
 	Serial.print(values.humidity);
 	Serial.println("%");
 
-	lcd.clear();
-
-	//temperature
-	lcd.setCursor(0, 0);
-	lcd.print("Temp: ");
-	lcd.print(values.temperature);
-	lcd.print("*C");
-
-	//humidity
-	lcd.setCursor(0, 1);
-	lcd.print("Humidity: ");
-	lcd.print(values.humidity);
-	lcd.print("%");
+	// lcd.clear();
+	//
+	// //temperature
+	// lcd.setCursor(0, 0);
+	// lcd.print("Temp: ");
+	// lcd.print(values.temperature);
+	// lcd.print("*C");
+	//
+	// //humidity
+	// lcd.setCursor(0, 1);
+	// lcd.print("Humidity: ");
+	// lcd.print(values.humidity);
+	// lcd.print("%");
 }
 
 TempAndHumidity Temperature::GetValues()
