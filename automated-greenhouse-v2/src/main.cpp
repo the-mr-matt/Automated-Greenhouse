@@ -28,7 +28,7 @@ void setup()
 	motor.Initialize();
 	clock.Initialize();
 	temperature.Initialize();
-	water.SetWater(false);
+	water.Initialize();
 	window.SetWindow(true);
 }
 
@@ -40,9 +40,8 @@ void loop()
 	// Debounce(windowOverridePin, windowDebounceTime, prevWindowState, windowCallback);
 	// Debounce(waterOverridePin, waterDebounceTime, prevWaterState, waterCallback);
 
-	//process scheduled water, water is turned on at the start of day if something was scheduled
-	auto startDay = [](){ Serial.println("starting scheduled water"); water.SetWater(true); };
-	clock.OnStartDay(startDay);
+	Serial.print("button: ");
+	Serial.println(digitalRead(windowOverridePin));
 
 	//wait for refresh interval - process values and switch modes
 	long timeSinceLastDisplayModeChange = currentMillis - startMillis;

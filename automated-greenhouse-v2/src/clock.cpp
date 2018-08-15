@@ -10,8 +10,6 @@ bool b_IsDay;
 //----IMPLEMENTATIONS----
 Clock::Clock(){}
 
-bool Clock::schedule = false;
-
 //Initialize the RTC module
 void Clock::Initialize()
 {
@@ -19,27 +17,10 @@ void Clock::Initialize()
   rtc.begin();
 
   //override rtc time
-  //rtc.adjust(DateTime(2018, 7, 7, 10, 0, 0));
+  //rtc.adjust(DateTime(2018, 7, 7, 7, 59, 30));
 
   //set rtc to time at the time of compiling
-  //rtc.adjust(DateTime(__DATE__, __TIME__));
-}
-
-//Called at the start of each day
-void Clock::OnStartDay(void (*callback)())
-{
-    //if watering was scheduled
-    if(schedule)
-    {
-        //if day status changed
-        if(b_IsDay != IsDay() && IsDay())
-        {
-            callback();
-            schedule = false;
-        }
-
-        b_IsDay = IsDay();
-    }
+  rtc.adjust(DateTime(__DATE__, __TIME__));
 }
 
 //Returns true within the allowed hours of day

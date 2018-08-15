@@ -14,8 +14,11 @@ void SoilMoisture::ProcessSoilMoisture()
 {
 	Serial.println("process soil moisture");
 
-	bool waterState = GetSoilMoisture() > soilMoistureThreshold;
-	water.SetWater(waterState);
+	bool waterState = GetSoilMoisture() < soilMoistureThreshold;
+	if(waterState)
+	{
+		water.StartWatering();
+	}
 }
 
 //Prints the soil moisture to the LCD

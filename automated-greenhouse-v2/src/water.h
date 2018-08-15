@@ -1,6 +1,9 @@
 #ifndef water_h
 #define water_h
 
+//----DEFINITIONS----
+const unsigned long waterDuration = 10000;    //1000ms * 60s = 1 minute
+
 class Water
 {
 public:
@@ -8,7 +11,8 @@ public:
   Water();
 
   //declarations
-  void SetWater(bool state);
+  void Initialize();
+  void StartWatering();
 };
 
 //global
