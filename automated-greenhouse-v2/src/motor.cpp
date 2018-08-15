@@ -1,7 +1,7 @@
 //----LIBRARIES----
+#include <A4988.h>
 #include "motor.h"
 #include "pins.h"
-#include <A4988.h>
 
 //----CONFIG----
 A4988 stepper(motorSteps, motorDirPin, motorStepPin);

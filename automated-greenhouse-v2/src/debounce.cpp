@@ -1,8 +1,9 @@
 //----LIBRARIES----
-#include "debounce.h"
 #include <Arduino.h>
+#include "debounce.h"
 
-//returns state of the pin after debouncing
+//----IMPLEMENTATIONS----
+//Returns state of the pin after debouncing
 void Debounce(int pin, int debounceTime, int prevState, void (*callback)())
 {
 	//read current state of given pin

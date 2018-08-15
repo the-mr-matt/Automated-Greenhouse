@@ -1,8 +1,8 @@
 //----LIBRARIES----
-#include "water.h"
-#include "pins.h"
-#include "clock.h"
 #include <Arduino.h>
+#include "clock.h"
+#include "pins.h"
+#include "water.h"
 
 //----IMPLEMENTATIONS----
 Water::Water(){}

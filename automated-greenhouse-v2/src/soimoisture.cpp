@@ -1,13 +1,15 @@
 //----LIBRARIES----
-#include "soilmoisture.h"
-#include "pins.h"
-#include "lcd.h"
-#include "water.h"
 #include <Arduino.h>
+#include "clamp.h"
+#include "lcd.h"
+#include "pins.h"
+#include "soilmoisture.h"
+#include "water.h"
 
 //----IMPLEMENTATIONS
 SoilMoisture::SoilMoisture(){}
 
+//Determines if the water needs to be turned on or not based on the soil moisture
 void SoilMoisture::ProcessSoilMoisture()
 {
 	Serial.println("process soil moisture");
@@ -44,5 +46,5 @@ int SoilMoisture::GetSoilMoisture()
 	float flipped = 1.0 - normalized;
 	int percentage = (int)(flipped * 100.0);
 
-	return percentage;
+	return ClampInt(percentage, 0, 100);
 }

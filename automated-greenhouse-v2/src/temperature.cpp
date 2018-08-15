@@ -1,10 +1,11 @@
 //----LIBRARIES----
 #include <Arduino.h>
 #include <SPI.h>
-#include "temperature.h"
+#include "clamp.h"
 #include "DHT.h"
-#include "pins.h"
 #include "lcd.h"
+#include "pins.h"
+#include "temperature.h"
 #include "window.h"
 
 //----CONFIG----
@@ -18,11 +19,13 @@ bool b_IsTemperatureOverThreshold;
 //----IMPLEMENTATIONS
 Temperature::Temperature(){}
 
+//Initialize the temperature sensor
 void Temperature::Initialize()
 {
 	tempSensor.setup(12);
 }
 
+//Determines if the windows need to be opened/closed based on the temperature
 void Temperature::ProcessTemperature()
 {
 	Serial.println("process temperature");
@@ -56,15 +59,6 @@ void Temperature::ProcessTemperature()
 //Prints the temperature and humidity to the LCD
 void Temperature::PrintTemperature()
 {
-	//debug
-	Serial.print("temperature: ");
-	Serial.print(values.temperature);
-	Serial.println("*C");
-
-	Serial.print("humidity: ");
-	Serial.print(values.humidity);
-	Serial.println("%");
-
 	lcd.clear();
 
 	//temperature
@@ -80,6 +74,7 @@ void Temperature::PrintTemperature()
 	lcd.print("%");
 }
 
+//Get the current temperature and humidity from the sensor
 TempAndHumidity Temperature::GetValues()
 {
 	//terminate SPI to allow communication on pin 12
@@ -101,7 +96,7 @@ TempAndHumidity Temperature::GetValues()
 
 	//values are as expected
 	tempAndHumidity.temperature = temperature;
-	tempAndHumidity.humidity = humidity;
+	tempAndHumidity.humidity = ClampInt(humidity, 0, 100);
 
 	//resume normal SPI behaviour
 	SPI.begin();

@@ -1,9 +1,9 @@
 //----LIBRARIES----
-#include "window.h"
-#include "pins.h"
-#include "motor.h"
-#include "lcd.h"
 #include <Arduino.h>
+#include "lcd.h"
+#include "motor.h"
+#include "pins.h"
+#include "window.h"
 
 //----IMPLEMENTATIONS----
 Window::Window(){}
@@ -15,7 +15,9 @@ void Window::SetWindow(bool open)
 	Serial.println(open);
 
 	//init timer
-	int startTime = millis();
+	unsigned long startTime = millis();
+	Serial.print("start time: ");
+	Serial.println(startTime);
 
 	lcd.clear();
 
@@ -31,10 +33,13 @@ void Window::SetWindow(bool open)
 		lcd.print(message);
 
 		//show elapsed time
-		int elapsedTime = (millis() - startTime) / 1000;
+		unsigned long elapsedTime = ((millis() - startTime) / 1000);
 		lcd.setCursor(0, 1);
 		lcd.print(elapsedTime);
 		lcd.print("s");
+		Serial.print("current: ");
+		Serial.print(millis());
+		Serial.print(", elapsed: ");
 		Serial.print(elapsedTime);
 		Serial.println("s");
 
