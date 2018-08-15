@@ -1,37 +1,10 @@
-// #include "DHT.h"
-// #include <Arduino.h>
-// #include "temperature.h"
-//
-// DHT temp;
-//
-// Temperature::Temperature(){}
-//
-// void Temperature::Initialize()
-// {
-// 	temp.setup(12);
-// }
-//
-// int Temperature::GetTemperature()
-// {
-// Serial.print(temp.getStatusString());
-// Serial.print(", ");
-// Serial.print(temp.getTemperature());
-// Serial.print(", ");
-// Serial.println(temp.getHumidity());
-//
-// 	return 0;
-// }
-
-
-
-
-
 //----LIBRARIES----
 #include <Arduino.h>
+#include <SPI.h>
 #include "temperature.h"
 #include "DHT.h"
 #include "pins.h"
-// #include "lcd.h"
+#include "lcd.h"
 #include "window.h"
 
 //----CONFIG----
@@ -92,23 +65,26 @@ void Temperature::PrintTemperature()
 	Serial.print(values.humidity);
 	Serial.println("%");
 
-	// lcd.clear();
-	//
-	// //temperature
-	// lcd.setCursor(0, 0);
-	// lcd.print("Temp: ");
-	// lcd.print(values.temperature);
-	// lcd.print("*C");
-	//
-	// //humidity
-	// lcd.setCursor(0, 1);
-	// lcd.print("Humidity: ");
-	// lcd.print(values.humidity);
-	// lcd.print("%");
+	lcd.clear();
+
+	//temperature
+	lcd.setCursor(0, 0);
+	lcd.print("Temp: ");
+	lcd.print(values.temperature);
+	lcd.print("*C");
+
+	//humidity
+	lcd.setCursor(0, 1);
+	lcd.print("Humidity: ");
+	lcd.print(values.humidity);
+	lcd.print("%");
 }
 
 TempAndHumidity Temperature::GetValues()
 {
+	//terminate SPI to allow communication on pin 12
+	SPI.end();
+
 	TempAndHumidity tempAndHumidity;
 
 	//get current values
@@ -126,6 +102,9 @@ TempAndHumidity Temperature::GetValues()
 	//values are as expected
 	tempAndHumidity.temperature = temperature;
 	tempAndHumidity.humidity = humidity;
+
+	//resume normal SPI behaviour
+	SPI.begin();
 
 	return tempAndHumidity;
 }

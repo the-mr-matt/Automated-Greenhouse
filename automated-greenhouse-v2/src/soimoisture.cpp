@@ -1,7 +1,7 @@
 //----LIBRARIES----
 #include "soilmoisture.h"
 #include "pins.h"
-// #include "lcd.h"
+#include "lcd.h"
 #include "water.h"
 #include <Arduino.h>
 
@@ -19,12 +19,12 @@ void SoilMoisture::ProcessSoilMoisture()
 //Prints the soil moisture to the LCD
 void SoilMoisture::PrintSoilMoisture()
 {
-	// lcd.clear();
-	//
-	// lcd.setCursor(0, 0);
-	// lcd.print("Moisture: ");
-	// lcd.print(GetSoilMoisture());
-	// lcd.print("%");
+	lcd.clear();
+
+	lcd.setCursor(0, 0);
+	lcd.print("Moisture: ");
+	lcd.print(GetSoilMoisture());
+	lcd.print("%");
 }
 
 //Returns the average soil moisture
