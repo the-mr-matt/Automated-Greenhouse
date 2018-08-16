@@ -19,6 +19,6 @@ void Motor::Initialize()
 //Turn the motor by the given angle and in the given direction
 void Motor::Step (float degrees, Direction direction)
 {
-	degrees *= direction == 0;
+	degrees *= direction == Direction::Clockwise ? 1 : -1;
 	stepper.rotate(degrees);
 }

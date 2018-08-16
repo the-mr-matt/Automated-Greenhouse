@@ -11,8 +11,8 @@ const int soilPin2 = 1; //analog
 const int soilPin3 = 2; //analog
 const int soilPin4 = 3; //analog
 const int solenoidPin = 6;
-const int motorDirPin = 7;
-const int motorStepPin = 8;
+const int motorDirPin = 8;
+const int motorStepPin = 7;
 const int lcdPin = 9;
 const int tempSensorPin = 12;
 
