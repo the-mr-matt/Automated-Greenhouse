@@ -20,6 +20,16 @@ void Water::StartWatering()
 	//if water is to be turned on at night, schedule it for the next morning
 	if(!clock.IsDay())
 	{
+		lcd.clear();
+		lcd.print("Cannot use water");
+		lcd.setCursor(0, 1);
+		lcd.print("at night");
+
+		delay(3000);
+
+		lcd.clear();
+		lcd.print("Moisture: ");
+
 		//stop the function - we don't want to turn on the water yet
 		return;
 	}

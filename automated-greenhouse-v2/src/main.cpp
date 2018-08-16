@@ -35,10 +35,10 @@ void setup()
 void loop()
 {
 	//manual override buttons
-	auto windowCallback = [](){ window.SetWindow(!window.isOpen); };
-	auto waterCallback = [](){ water.StartWatering(); };
-	Debounce(windowOverridePin, windowDebounceTime, prevWindowState, windowCallback);
-	Debounce(waterOverridePin, waterDebounceTime, prevWaterState, waterCallback);
+	auto windowCallback = [](){ Serial.println("window override"); window.SetWindow(!window.isOpen); };
+	auto waterCallback = [](){ Serial.println("water override"); displayMode = DisplayMode::SoilMoisture; water.StartWatering(); };
+	Debounce(windowOverridePin, &windowDebounceTime, &prevWindowState, windowCallback);
+	Debounce(waterOverridePin, &waterDebounceTime, &prevWaterState, waterCallback);
 
 	//wait for refresh interval - process values and switch modes
 	long timeSinceLastDisplayModeChange = currentMillis - startMillis;
@@ -52,12 +52,19 @@ void loop()
 			//switch mode
 			displayMode = DisplayMode::SoilMoisture;
 			Serial.println("soil moisture mode");
+
+			lcd.clear();
+			lcd.setCursor(0, 0);
+			lcd.print("Moisture: ");
 		}
 		else
 		{
 			//switch mode
 			displayMode = DisplayMode::Temperature;
 			Serial.println("temperature mode");
+
+			//display to lcd
+			temperature.PrintTemperature();
 		}
 
 		//process
@@ -76,12 +83,7 @@ void loop()
 	}
 
 	//display current values
-	if(displayMode == DisplayMode::Temperature)
-	{
-		//display to lcd
-		temperature.PrintTemperature();
-	}
-	else
+	if(displayMode == DisplayMode::SoilMoisture)
 	{
 		//display to lcd
 		soilMoisture.PrintSoilMoisture();
@@ -90,5 +92,5 @@ void loop()
 	//get the new current time
 	currentMillis = millis();
 
-	delay(50);
+	// delay(50);
 }

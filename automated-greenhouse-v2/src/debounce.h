@@ -2,7 +2,7 @@
 #define debounce_h
 
 //----DECLARATIONS----
-void Debounce(int pin, int debounceTime, int prevState, void (*callback)());
-const int debounceDuration = 50;	//ms
+const unsigned long debounceDuration = 50;	//ms
+void Debounce(int pin, unsigned long* debounceTime, int* prevState, void (*callback)());
 
 #endif //debounce_h

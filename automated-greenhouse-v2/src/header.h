@@ -3,8 +3,8 @@
 
 //declarations
 auto refreshInterval = 10000;	//1000ms * 60seconds = 1 minute
-int windowDebounceTime;
-int waterDebounceTime;
+unsigned long windowDebounceTime;
+unsigned long waterDebounceTime;
 int prevWindowState;
 int prevWaterState;
 
