@@ -48,5 +48,8 @@ int SoilMoisture::GetSoilMoisture()
 	float flipped = 1.0 - normalized;
 	int percentage = (int)(flipped * 100.0);
 
+	Serial.print("moisture: ");
+	Serial.println(ClampInt(percentage, 0, 100));
+
 	return ClampInt(percentage, 0, 100);
 }

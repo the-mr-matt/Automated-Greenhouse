@@ -3,6 +3,7 @@
 #include "clock.h"
 #include "lcd.h"
 #include "pins.h"
+#include "timer.h"
 #include "water.h"
 
 //----IMPLEMENTATIONS----
@@ -49,6 +50,7 @@ void Water::StartWatering()
 	{
 		unsigned long elapsedTime = (millis() - startTime);
 		unsigned long seconds = (waterDuration - elapsedTime) / 1000;
+		String niceTime = SecondsToMinutes(seconds);
 
 		//timer done
 		if(elapsedTime > waterDuration)
@@ -70,12 +72,12 @@ void Water::StartWatering()
 		}
 
 		//debug
-		Serial.print(seconds);
+		Serial.print(niceTime);
 		Serial.println("s");
 
 		//show user time remaining
 		lcd.setCursor(0, 1);
-		lcd.print(seconds);
+		lcd.print(niceTime);
 		lcd.print("s     ");
 
 		delay(50);

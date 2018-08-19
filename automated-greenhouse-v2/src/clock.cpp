@@ -21,15 +21,14 @@ void Clock::Initialize()
   //rtc.adjust(DateTime(2018, 7, 7, 7, 59, 30));
 
   //set rtc to time at the time of compiling
-  rtc.adjust(DateTime(__DATE__, __TIME__));
+  // rtc.adjust(DateTime(__DATE__, __TIME__));
 }
 
 //Returns true within the allowed hours of day
 bool Clock::IsDay() {
   //get current time
   DateTime now = rtc.now();
-  Serial.print("hour: ");
-  Serial.println(now.hour());
+
   //day time is considered to be between 8AM and 5PM for this project
   return (now.hour() >= 8 && now.hour() < 17);
 }

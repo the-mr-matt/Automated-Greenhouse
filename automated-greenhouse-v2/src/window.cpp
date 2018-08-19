@@ -3,6 +3,7 @@
 #include "lcd.h"
 #include "motor.h"
 #include "pins.h"
+#include "timer.h"
 #include "window.h"
 
 //----IMPLEMENTATIONS----
@@ -36,13 +37,14 @@ void Window::SetWindow(bool open)
 
 		//show elapsed time
 		unsigned long elapsedTime = ((millis() - startTime) / 1000);
+		String niceTime = SecondsToMinutes(elapsedTime);
 		lcd.setCursor(0, 1);
-		lcd.print(elapsedTime);
+		lcd.print(niceTime);
 		lcd.print("s");
 		Serial.print("current: ");
 		Serial.print(millis());
 		Serial.print(", elapsed: ");
-		Serial.print(elapsedTime);
+		Serial.print(niceTime);
 		Serial.println("s");
 
 		//check if the window is now open
