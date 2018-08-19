@@ -40,12 +40,10 @@ void Window::SetWindow(bool open)
 		String niceTime = SecondsToMinutes(elapsedTime);
 		lcd.setCursor(0, 1);
 		lcd.print(niceTime);
-		lcd.print("s");
 		Serial.print("current: ");
 		Serial.print(millis());
 		Serial.print(", elapsed: ");
-		Serial.print(niceTime);
-		Serial.println("s");
+		Serial.println(niceTime);
 
 		//check if the window is now open
 		int windowState = digitalRead(open ? windowOpenPin : windowClosedPin);

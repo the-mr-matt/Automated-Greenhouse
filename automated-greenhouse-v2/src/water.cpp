@@ -72,13 +72,12 @@ void Water::StartWatering()
 		}
 
 		//debug
-		Serial.print(niceTime);
-		Serial.println("s");
+		Serial.println(niceTime);
 
 		//show user time remaining
 		lcd.setCursor(0, 1);
 		lcd.print(niceTime);
-		lcd.print("s     ");
+		lcd.print("     ");
 
 		delay(50);
 	}

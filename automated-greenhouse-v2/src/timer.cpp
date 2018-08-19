@@ -24,7 +24,7 @@ String SecondsToMinutes(unsigned long totalSeconds)
 	output.concat(minutes);
 	output.concat("m ");
 	output.concat(seconds);
-	output.concat("s");
+	output.concat("s  ");
 
 	return output;
 };
