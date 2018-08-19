@@ -24,9 +24,11 @@ void SoilMoisture::ProcessSoilMoisture()
 //Prints the soil moisture to the LCD
 void SoilMoisture::PrintSoilMoisture()
 {
-	lcd.setCursor(10, 0);
+	lcd.clear();
+	lcd.setCursor(0, 0);
+	lcd.print("Moisture: ");
 	lcd.print(GetSoilMoisture());
-	lcd.print("%    ");
+	lcd.print("%");
 }
 
 //Returns the average soil moisture

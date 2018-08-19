@@ -1,4 +1,5 @@
 //----LIBRARIES----
+#include <Arduino.h>
 #include <Wire.h>
 #include "clock.h"
 #include "RTClib.h"
@@ -27,7 +28,8 @@ void Clock::Initialize()
 bool Clock::IsDay() {
   //get current time
   DateTime now = rtc.now();
-
+  Serial.print("hour: ");
+  Serial.println(now.hour());
   //day time is considered to be between 8AM and 5PM for this project
   return (now.hour() >= 8 && now.hour() < 17);
 }

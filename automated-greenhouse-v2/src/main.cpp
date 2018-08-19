@@ -15,7 +15,7 @@
 long startMillis;
 long currentMillis;
 enum DisplayMode { Temperature, SoilMoisture };
-DisplayMode displayMode = DisplayMode::Temperature;
+DisplayMode displayMode = DisplayMode::SoilMoisture;
 
 void setup()
 {
@@ -52,10 +52,6 @@ void loop()
 			//switch mode
 			displayMode = DisplayMode::SoilMoisture;
 			Serial.println("soil moisture mode");
-
-			lcd.clear();
-			lcd.setCursor(0, 0);
-			lcd.print("Moisture: ");
 		}
 		else
 		{
@@ -92,5 +88,5 @@ void loop()
 	//get the new current time
 	currentMillis = millis();
 
-	// delay(50);
+	delay(50);
 }
