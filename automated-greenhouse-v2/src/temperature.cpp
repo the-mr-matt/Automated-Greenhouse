@@ -23,6 +23,7 @@ Temperature::Temperature(){}
 void Temperature::Initialize()
 {
 	tempSensor.setup(12);
+	ProcessTemperature();
 }
 
 //Determines if the windows need to be opened/closed based on the temperature

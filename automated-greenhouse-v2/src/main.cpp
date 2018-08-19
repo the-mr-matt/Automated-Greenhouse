@@ -27,9 +27,17 @@ void setup()
 	lcd_system.Initialize();
 	motor.Initialize();
 	clock.Initialize();
+	lcd.clear();
+	lcd.print("Initializing");
+	lcd.setCursor(0, 1);
+	lcd.print("Temperature...");
 	temperature.Initialize();
+	delay(2000);
+	temperature.ProcessTemperature();
 	water.Initialize();
 	window.SetWindow(true);
+
+	currentMillis = refreshInterval + millis();
 }
 
 void loop()
