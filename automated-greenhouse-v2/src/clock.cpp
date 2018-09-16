@@ -25,10 +25,17 @@ void Clock::Initialize()
 }
 
 //Returns true within the allowed hours of day
-bool Clock::IsDay() {
+bool Clock::IsDay()
+{
   //get current time
   DateTime now = rtc.now();
 
-  //day time is considered to be between 8AM and 5PM for this project
-  return (now.hour() >= 8 && now.hour() < 17);
+  //day time is considered to be at 8AM or 7PM for this project
+  return (now.hour() == 8 || now.hour() == 19);
+}
+
+int Clock::Hour()
+{
+    DateTime now = rtc.now();
+    return now.hour();
 }

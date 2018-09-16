@@ -2,7 +2,7 @@
 #define water_h
 
 //----DEFINITIONS----
-const unsigned long waterDuration = 10000;    //1000ms * 60s = 1 minute
+const unsigned long waterDuration = 300000;    //1000ms * 60s * 5s= 1 minute
 
 class Water
 {
@@ -12,7 +12,7 @@ public:
 
   //declarations
   void Initialize();
-  void StartWatering();
+  void StartWatering(bool overrideClock);
 };
 
 //global

@@ -10,6 +10,8 @@ public:
   //declarations
   void Initialize();
   bool IsDay();
+  void Test();
+  int Hour();
 };
 
 extern Clock clock;

@@ -21,7 +21,7 @@ void setup()
 {
 	//serial for debugging
 	Serial.begin(9600);
-	Serial.println("initializing");
+	Serial.println("Hello");
 
 	//initialize system
 	lcd_system.Initialize();
@@ -35,7 +35,7 @@ void setup()
 	delay(2000);
 	temperature.ProcessTemperature();
 	water.Initialize();
-	window.SetWindow(true);
+	//window.SetWindow(true);
 
 	currentMillis = refreshInterval + millis();
 }
@@ -43,9 +43,9 @@ void setup()
 void loop()
 {
 	//manual override buttons
-	auto windowCallback = [](){ Serial.println("window override"); window.SetWindow(!window.isOpen); };
-	auto waterCallback = [](){ Serial.println("water override"); displayMode = DisplayMode::SoilMoisture; water.StartWatering(); };
-	Debounce(windowOverridePin, &windowDebounceTime, &prevWindowState, windowCallback);
+	// auto windowCallback = [](){ Serial.println("window override"); window.SetWindow(!window.isOpen); };
+	auto waterCallback = [](){ Serial.println("water override"); displayMode = DisplayMode::SoilMoisture; water.StartWatering(true); };
+	// Debounce(windowOverridePin, &windowDebounceTime, &prevWindowState, windowCallback);
 	Debounce(waterOverridePin, &waterDebounceTime, &prevWaterState, waterCallback);
 
 	//wait for refresh interval - process values and switch modes

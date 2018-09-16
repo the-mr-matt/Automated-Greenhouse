@@ -14,59 +14,59 @@ bool Window::isOpen = false;
 //Opens/closes the window
 void Window::SetWindow(bool open)
 {
-	Serial.print("set window to: ");
-	Serial.println(open);
-
-	//init timer
-	unsigned long startTime = millis();
-	Serial.print("start time: ");
-	Serial.println(startTime);
-
-	lcd.clear();
-
-	//loop until window is fully open
-	while(true)
-	{
-		//turn motor slightly
-		motor.Step(1.8, open ? Direction::Anticlockwise : Direction::Clockwise);
-
-		//give message to user
-		lcd.setCursor(0, 0);
-		String message = open ? "Opening Window" : "Closing Window";
-		lcd.print(message);
-
-		//show elapsed time
-		unsigned long elapsedTime = ((millis() - startTime) / 1000);
-		String niceTime = SecondsToMinutes(elapsedTime);
-		lcd.setCursor(0, 1);
-		lcd.print(niceTime);
-		Serial.print("current: ");
-		Serial.print(millis());
-		Serial.print(", elapsed: ");
-		Serial.println(niceTime);
-
-		//check if the window is now open
-		int windowState = digitalRead(open ? windowOpenPin : windowClosedPin);
-		if(windowState == HIGH)
-		{
-			Serial.print("window ");
-			Serial.println(open ? "open" : "closed");
-
-			//window is open
-			lcd.clear();
-			String message = open ? "Window Open" : "Window Closed";
-			lcd.print(message);
-
-			isOpen = open;
-
-			//wait for user to read message
-			delay(2000);
-
-			//break loop
-			return;
-		}
-
-		//wait a bit
-		delay(25);
-	}
+	// Serial.print("set window to: ");
+	// Serial.println(open);
+	//
+	// //init timer
+	// unsigned long startTime = millis();
+	// Serial.print("start time: ");
+	// Serial.println(startTime);
+	//
+	// lcd.clear();
+	//
+	// //loop until window is fully open
+	// while(true)
+	// {
+	// 	//turn motor slightly
+	// 	motor.Step(1.8, open ? Direction::Anticlockwise : Direction::Clockwise);
+	//
+	// 	//give message to user
+	// 	lcd.setCursor(0, 0);
+	// 	String message = open ? "Opening Window" : "Closing Window";
+	// 	lcd.print(message);
+	//
+	// 	//show elapsed time
+	// 	unsigned long elapsedTime = ((millis() - startTime) / 1000);
+	// 	String niceTime = SecondsToMinutes(elapsedTime);
+	// 	lcd.setCursor(0, 1);
+	// 	lcd.print(niceTime);
+	// 	Serial.print("current: ");
+	// 	Serial.print(millis());
+	// 	Serial.print(", elapsed: ");
+	// 	Serial.println(niceTime);
+	//
+	// 	//check if the window is now open
+	// 	int windowState = digitalRead(open ? windowOpenPin : windowClosedPin);
+	// 	if(windowState == HIGH)
+	// 	{
+	// 		Serial.print("window ");
+	// 		Serial.println(open ? "open" : "closed");
+	//
+	// 		//window is open
+	// 		lcd.clear();
+	// 		String message = open ? "Window Open" : "Window Closed";
+	// 		lcd.print(message);
+	//
+	// 		isOpen = open;
+	//
+	// 		//wait for user to read message
+	// 		delay(2000);
+	//
+	// 		//break loop
+	// 		return;
+	// 	}
+	//
+	// 	//wait a bit
+	// 	delay(25);
+	// }
 }

@@ -16,15 +16,15 @@ void Water::Initialize()
 }
 
 //Turn on/off the water
-void Water::StartWatering()
+void Water::StartWatering(bool overrideClock)
 {
 	//if water is to be turned on at night, schedule it for the next morning
-	if(!clock.IsDay())
+	if(overrideClock || !clock.IsDay())
 	{
 		lcd.clear();
 		lcd.print("Cannot use water");
 		lcd.setCursor(0, 1);
-		lcd.print("at night");
+		lcd.print("right now");
 
 		delay(3000);
 
