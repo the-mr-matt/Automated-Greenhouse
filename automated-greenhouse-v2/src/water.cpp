@@ -19,7 +19,8 @@ void Water::Initialize()
 void Water::StartWatering(bool overrideClock)
 {
 	//if water is to be turned on at night, schedule it for the next morning
-	if(overrideClock || !clock.IsDay())
+	//if the override button was manually pressed by the user then ignore this restriction
+	if(!overrideClock && !clock.IsDay())
 	{
 		lcd.clear();
 		lcd.print("Cannot use water");

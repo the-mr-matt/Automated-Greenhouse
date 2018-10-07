@@ -25,7 +25,6 @@ void setup()
 
 	//initialize system
 	lcd_system.Initialize();
-	motor.Initialize();
 	clock.Initialize();
 	lcd.clear();
 	lcd.print("Initializing");
@@ -35,7 +34,6 @@ void setup()
 	delay(2000);
 	temperature.ProcessTemperature();
 	water.Initialize();
-	//window.SetWindow(true);
 
 	currentMillis = refreshInterval + millis();
 }
@@ -43,17 +41,13 @@ void setup()
 void loop()
 {
 	//manual override buttons
-	// auto windowCallback = [](){ Serial.println("window override"); window.SetWindow(!window.isOpen); };
 	auto waterCallback = [](){ Serial.println("water override"); displayMode = DisplayMode::SoilMoisture; water.StartWatering(true); };
-	// Debounce(windowOverridePin, &windowDebounceTime, &prevWindowState, windowCallback);
 	Debounce(waterOverridePin, &waterDebounceTime, &prevWaterState, waterCallback);
 
 	//wait for refresh interval - process values and switch modes
 	long timeSinceLastDisplayModeChange = currentMillis - startMillis;
 	if(timeSinceLastDisplayModeChange >= refreshInterval)
 	{
-		Serial.println("tick");
-
 		//switch modes
 		if(displayMode == DisplayMode::Temperature)
 		{
@@ -67,26 +61,26 @@ void loop()
 			displayMode = DisplayMode::Temperature;
 			Serial.println("temperature mode");
 
-			//display to lcd
+			//display to lcd, only once at the start - not live because the sensor can only be read at a maximum of every two seconds, more than this and it starts returning NAN
 			temperature.PrintTemperature();
 		}
 
 		//process
 		if(displayMode == DisplayMode::Temperature)
 		{
-			//display to lcd
+			//read temperature and humidity from sensor
 			temperature.ProcessTemperature();
 		}
 		else
 		{
-			//display to lcd
+			//if the moisture is below the threshold the water will be turned on
 			soilMoisture.ProcessSoilMoisture();
 		}
 
 		startMillis = millis();
 	}
 
-	//display current values
+	//display current values, outside of the switching block to show a live reading - it can change
 	if(displayMode == DisplayMode::SoilMoisture)
 	{
 		//display to lcd

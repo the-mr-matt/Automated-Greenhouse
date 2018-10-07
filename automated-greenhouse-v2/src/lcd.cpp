@@ -12,7 +12,7 @@ void LCD_System::Initialize()
 
 		//inform user that the system is Initializing
 		lcd.setCursor(0, 0);
-		lcd.print("Hello...");
+		lcd.print("Initializing...");
 
 		//wait for user to read message
 		delay(3000);

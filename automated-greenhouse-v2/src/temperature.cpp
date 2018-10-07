@@ -30,31 +30,9 @@ void Temperature::Initialize()
 void Temperature::ProcessTemperature()
 {
 	Serial.println("process temperature");
-	
+
 	//get current values
 	values = GetValues();
-	//
-	// //check if the temperature is currently over the threshold
-	// isTemperatureOverThreshold = values.temperature > temperatureThreshold;
-	//
-	// //temperature has changed
-	// if(b_IsTemperatureOverThreshold != isTemperatureOverThreshold)
-	// {
-	// 	Serial.println("temp over threshold changed");
-	//
-	// 	//set window
-	// 	if(isTemperatureOverThreshold)
-	// 	{
-	// 		window.SetWindow(true);
-	// 	}
-	// 	else
-	// 	{
-	// 		window.SetWindow(false);
-	// 	}
-	// }
-	//
-	// //save for next frame
-	// b_IsTemperatureOverThreshold = isTemperatureOverThreshold;
 }
 
 //Prints the temperature and humidity to the LCD
